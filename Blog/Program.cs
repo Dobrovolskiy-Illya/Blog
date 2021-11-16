@@ -1,5 +1,7 @@
+using Blog.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -19,19 +21,21 @@ namespace Blog
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<BicycleContext>();
-                    TestData.Initialize(context);
+                var context = services.GetRequiredService<UserContext>();
+                TestData.Initialize(context);
+                //var services = scope.ServiceProvider;
+                //try
+                //{
+                //    var context = services.GetRequiredService<UserContext>();
+                //    TestData.Initialize(context);
 
-                    var context1 = services.GetRequiredService<UserContext>();
-                    RoleInitializeData.Initialize(context1);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "DB seeding error");
-                }
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    var logger = services.GetRequiredService<ILogger<Program>>();
+                //    logger.LogError(ex, "DB seeding error");
+                //}
             }
             host.Run();
 

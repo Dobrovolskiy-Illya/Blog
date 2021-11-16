@@ -7,7 +7,14 @@ namespace Blog.Models
 {
     public class UserSubscribe
     {
-        public int UserId { get; set; }
-        public ICollection<User> Users { get; set; }
+        public int UserSubscribeId { get; set; }
+        public int? UserId { get; set; }
+
+        public virtual User User { get; set; }
+        //public virtual ICollection<User> Users { get; set; }
+        //public UserSubscribe()
+        //{
+        //    Users = new HashSet<User>();
+        //}
     }
 }

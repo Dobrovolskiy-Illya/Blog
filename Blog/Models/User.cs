@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,12 @@ namespace Blog.Models
 {
     public class User : IdentityUser
     {
-        public ICollection<Article> Articles { get; set; }
-        public ICollection<UserSubscribe> UserSubscribes { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<UserSubscribe> UserSubscribes { get; set; }
+        public User()
+        {
+            UserSubscribes = new HashSet<UserSubscribe>();
+            Articles = new HashSet<Article>();
+        }
     }
 }

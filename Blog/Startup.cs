@@ -1,7 +1,10 @@
+using Blog.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,11 +33,9 @@ namespace Blog
             });
 
 
-            string connection = Configuration.GetConnectionString("DefaultConnection");
 
-            string connection2 = Configuration.GetConnectionString("DefaultConnection2");
-            services.AddDbContext<BicycleContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<UserContext>(options => options.UseSqlServer(connection2));
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<UserContext>(options => options.UseSqlServer(connection));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>();
