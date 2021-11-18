@@ -15,27 +15,21 @@ namespace Blog
     {
         public static void Main(string[] args)
         {
-            //CreateHostBuilder(args).Build().Run();
-
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<UserContext>();
-                TestData.Initialize(context);
-                //var services = scope.ServiceProvider;
-                //try
-                //{
-                //    var context = services.GetRequiredService<UserContext>();
-                //    TestData.Initialize(context);
-
-
-                //}
-                //catch (Exception ex)
-                //{
-                //    var logger = services.GetRequiredService<ILogger<Program>>();
-                //    logger.LogError(ex, "DB seeding error");
-                //}
+                try
+                {
+                    var context = services.GetRequiredService<UserContext>();
+                    TestData.Initialize(context);
+                    RoleInitializeData.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "DB seeding error");
+                }
             }
             host.Run();
 

@@ -12,26 +12,26 @@ namespace Blog.Models
             if (!context.Users.Any())
             {
                 context.Users.AddRange(
-                    new User
-                    {
-                        UserName = "Test0",
-                        Email = "i.dobrovolskiy101@gmail.com"
-                    },
-                    new User
-                    {
-                        UserName = "Test1",
-                        Email = "i.dobrovolskiy102@gmail.com"
-                    },
-                    new User
-                    {
-                        UserName = "Test2",
-                        Email = "i.dobrovolskiy103@gmail.com"
-                    },
-                    new User
-                    {
-                        UserName = "Test3",
-                        Email = "i.dobrovolskiy104@gmail.com"
-                    },
+                    //new User
+                    //{
+                    //    UserName = "Test0",
+                    //    Email = "i.dobrovolskiy101@gmail.com"
+                    //},
+                    //new User
+                    //{
+                    //    UserName = "Test1",
+                    //    Email = "i.dobrovolskiy102@gmail.com"
+                    //},
+                    //new User
+                    //{
+                    //    UserName = "Test2",
+                    //    Email = "i.dobrovolskiy103@gmail.com"
+                    //},
+                    //new User
+                    //{
+                    //    UserName = "Test3",
+                    //    Email = "i.dobrovolskiy104@gmail.com"
+                    //},
                     new User
                     {
                         UserName = "Test4",
