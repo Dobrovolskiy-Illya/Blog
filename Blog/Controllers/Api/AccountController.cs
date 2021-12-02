@@ -12,22 +12,19 @@ using System.Threading.Tasks;
 
 namespace Blog.Controllers.Api
 {
-    /// <summary>
-    /// ////////
-    /// </summary>
-    //public class TempUser
-    //{
-    //    public string Login { get; set; }
-    //    public string Password { get; set; }
-    //    public string Role { get; set; }
-    //}
-
-
+    public class NewUser
+    {
+        public string name { get; set; }
+        public string phoneNumber { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
+    }
 
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
+        
         /// <summary>
         ///                 в последствии убрать этот код при замене на 3tier
         /// </summary>
@@ -45,9 +42,10 @@ namespace Blog.Controllers.Api
 
 
         [HttpPost]
-        public IActionResult SignIn(User user)
+        public IActionResult SignIn(NewUser user)
         {
-            var identity = GetIdentityAsync(user.UserName, user.PasswordHash);
+            //// заменить юзера на 2 переменные
+            var identity = GetIdentityAsync(user.name, user.password);
             if (identity == null)
             {
                 return BadRequest(new { error = "Invalid login and/or password" });
@@ -56,32 +54,45 @@ namespace Blog.Controllers.Api
 
             return Json(new
             {
-                access_token = token
+                access_token = token,
+                user_name = user.name
             });
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Register(User user)
+        public async Task<IActionResult> Register(NewUser newUser)
         {
 
-            string result = await CreateNewUserAsync(user);
-
-            if (result == "successfully")
+            try
             {
-                var identity = GetIdentityAsync(user.UserName, user.PasswordHash);
-                if (identity == null)
-                {
-                    return BadRequest(new { error = "Invalid login and/or password" });
-                }
-                string token = Token(identity);
+                User user = new User { UserName = newUser.name, PhoneNumber = newUser.phoneNumber, Email = newUser.email };
 
-                return Json(new
+                IdentityResult result = await userManager.CreateAsync(user, newUser.password);
+
+                //string result = await CreateNewUserAsync(user);
+
+                if (result.Succeeded)
                 {
-                    access_token = token
-                });
+                    var identity = GetIdentityAsync(user.UserName, newUser.password);
+                    if (identity == null)
+                    {
+                        return BadRequest(new { error = "Invalid login and/or password" });
+                    }
+                    string token = Token(identity);
+
+                    return Json(new
+                    {
+                        access_token = token,
+                        user_name = user.UserName
+                    });
+                }
+                return BadRequest(new { error = "Something went wrong. Please try again later" });
             }
-            return BadRequest(new { error = "Something went wrong. Please try again later" });
+            catch
+            {
+                return BadRequest(new { error = "Something went wrong. Please try again later" });
+            }
         }
 
         async Task<string> CreateNewUserAsync(User user)
@@ -128,7 +139,7 @@ namespace Blog.Controllers.Api
             }
         }
 
-        private async Task<ClaimsIdentity> GetIdentityAsync(string login, string password)
+        async Task<ClaimsIdentity> GetIdentityAsync(string login, string password)
         {
             var result = await signInManager.PasswordSignInAsync(login, password, true, false);
             if (result.Succeeded)
