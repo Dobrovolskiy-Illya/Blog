@@ -1,4 +1,5 @@
 using Blog.Models;
+using Blog.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,7 +41,7 @@ namespace Blog
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>();
 
-
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
             services.AddSession();
         }

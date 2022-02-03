@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { login } from './accountActionCreators';
 
@@ -148,13 +148,13 @@ class Register extends Component {
 
     async buttonAccessHandler() {
         if (this.CheckConfirmPassword() && this.CheckPassword() && this.CheckName() && this.CheckEmail() && this.CheckPhoneNumber()) {
-            console.log("YES")
+            //console.log("YES")
             this.setState({
                 buttonDisabled: false
             })
         }
         else {
-            console.log("NO")
+            //console.log("NO")
             this.setState({
                 buttonDisabled: true
             })
@@ -184,26 +184,30 @@ class Register extends Component {
         
 
         let result = await response.json();
-        console.log(result.access_token)
+        //console.log(result.access_token)
 
-        console.log(result)
-        console.log(response)
-        console.log(result.access_token)
+        //console.log(result)
+        //console.log(response)
+        //console.log(result.access_token)
 
         if (response.ok) { // если HTTP-статус в диапазоне 200-299
             // получаем тело ответа (см. про этот метод ниже)
             sessionStorage.setItem(tokenKey, result.access_token)
 
+            //this.props.login(result.user_name, result.access_token)
+
             this.setState({
                 loginName: this.state.name,
                 token: result.access_token
-            })        
+            })      
+
+            //console.log(this.state.token)
 
 
             //let json = await response.json();
         } else {
             //alert("Ошибка HTTP: " + response.status);
-            console.log(response.status, response.errorText)
+            //console.log(response.status, response.errorText)
 
             this.setState({
                 error: "error",
@@ -219,19 +223,21 @@ class Register extends Component {
     render() {
        
         if (this.state.loginName !== '' && this.state.token !== '') {
-            return (
-                <div>
-                    <div> Registration completed successfully </div>
+            this.props.login(this.state.loginName, this.state.token)
+            return <Redirect to="/" />
+            //return (
+            //    <div>
+            //        <div> Registration completed successfully </div>
 
-                    <div>
-                        <button onClick={() => this.props.login(this.state.loginName, this.state.token )} >TEST</button>
-                    </div>
+            //        <div>
+            //            <button onClick={() => this.props.login(this.state.loginName, this.state.token )} >TEST</button>
+            //        </div>
 
-                    <div>
-                        <button onClick={this.props.login(this.state.loginName, this.state.token)} ><NavLink tag={Link} className="text-dark" to="/">Main menu</NavLink></button>
-                    </div>
-                </div>
-            )
+            //        <div>
+            //            <button onClick={this.props.login(this.state.loginName, this.state.token)} ><NavLink tag={Link} className="text-dark" to="/">Main menu</NavLink></button>
+            //        </div>
+            //    </div>
+            //)
         }
         else {
 

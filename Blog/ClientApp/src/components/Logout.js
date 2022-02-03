@@ -3,6 +3,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { login } from './accountActionCreators';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -16,15 +17,18 @@ class Logout extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <div> Logging out completed successfully </div>
+        this.props.login(this.state.loginName, this.state.token)
+        sessionStorage.clear()
+        return <Redirect to="/" />
+        //return (
+        //    <div>
+        //        <div> Logging out completed successfully </div>
 
-                <div>
-                    <button onClick={() => this.props.login(this.state.loginName, this.state.token)} ><NavLink tag={Link} className="text-dark" to="/">Main menu</NavLink></button>
-                </div>
-            </div>
-        )
+        //        <div>
+        //            <button onClick={() => this.props.login(this.state.loginName, this.state.token)} ><NavLink tag={Link} className="text-dark" to="/">Main menu</NavLink></button>
+        //        </div>
+        //    </div>
+        //)
 
     }
 }

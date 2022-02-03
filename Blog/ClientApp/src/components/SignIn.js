@@ -3,6 +3,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { login } from './accountActionCreators';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -97,6 +98,9 @@ class SignIn extends Component {
             // получаем тело ответа (см. про этот метод ниже)
             sessionStorage.setItem(tokenKey, result.access_token)
 
+
+            
+
             this.setState({
                 loginName: this.state.name,
                 token: result.access_token
@@ -114,15 +118,17 @@ class SignIn extends Component {
     render() {
         
         if (this.state.loginName !== '' && this.state.token !== '') {
-            return (
-                <div>
-                    <div> Sign in completed successfully </div>
+            this.props.login(this.state.loginName, this.state.token)
+            return <Redirect to="/" />
+            //return (
+            //    <div>
+            //        <div> Sign in completed successfully </div>
 
-                    <div>
-                        <button onClick={() => this.props.login(this.state.loginName, this.state.token)} ><NavLink tag={Link} className="text-dark" to="/">Main menu</NavLink></button>
-                    </div>
-                </div>
-            )
+            //        <div>
+            //            <button onClick={() => this.props.login(this.state.loginName, this.state.token)} ><NavLink tag={Link} className="text-dark" to="/">Main menu</NavLink></button>
+            //        </div>
+            //    </div>
+            //)
         }
         else {
 

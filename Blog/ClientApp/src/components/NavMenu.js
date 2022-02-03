@@ -61,7 +61,8 @@ class NavMenu extends Component {
 
 
 
-
+                                {console.log("props")}
+                                {console.log(this.props.userName)}
                                 <div className="ml-5 pl-5 d-flex">
                                     {this.props.userName === '' &&
                                         <NavItem>
