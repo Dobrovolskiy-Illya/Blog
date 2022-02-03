@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blog.Models.DTO
+namespace Blog.Models
 {
-    public class CheckTokenModel: JWT
+    public class JWT
     {
+        public string JWT { get; set; }
     }
 }

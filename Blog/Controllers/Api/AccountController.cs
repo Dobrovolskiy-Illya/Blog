@@ -120,7 +120,7 @@ namespace Blog.Controllers.Api
         {
             AuthOptions authOptions = new AuthOptions();
             var result = authOptions.Verify(checkToken.JWT);
-
+            //добавить условия и обернуть в try - catch
             var user = repository.GetById(result.Issuer);
 
             if (user != null)
