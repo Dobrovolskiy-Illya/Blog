@@ -14,22 +14,14 @@ using System.Threading.Tasks;
 
 namespace Blog.Controllers.Api
 {
-    //public class NewUser
-    //{
-    //    public string name { get; set; }
-    //    public string phoneNumber { get; set; }
-    //    public string email { get; set; }
-    //    public string password { get; set; }
-    //}
+   
 
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         
-        /// <summary>
-        ///                 в последствии убрать этот код при замене на 3tier
-        /// </summary>
+      
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IUserRepository repository;
@@ -43,47 +35,25 @@ namespace Blog.Controllers.Api
             this.repository = repository;
 
         }
-        /// <summary>
-        /// 
-        /// </summary>
+       
 
 
-        //[HttpPost]
-        //public IActionResult SignIn(NewUser user)
-        //{
-        //    //// заменить юзера на 2 переменные
-        //    var identity = GetIdentityAsync(user.name, user.password);
-        //    if (identity == null)
-        //    {
-        //        return BadRequest(new { error = "Invalid login and/or password" });
-        //    }
-        //    string token = Token(identity);
-
-        //    //AuthOptions authOptions = new AuthOptions();
-        //    //var token = authOptions.GenerateToken(user.Id);
-
-        //    return Json(new
-        //    {
-        //        access_token = token,
-        //        user_name = user.name
-        //    });
-
-        //}
+       
 
 
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInModel signIn)
         {
-            //// заменить юзера на 2 переменные
+            //add try-catch
+
+
             var identity = await GetIdentityAsync(signIn.Name, signIn.Password);
             //if (identity == null)
             //{
             //    return BadRequest(new { error = "Invalid login and/or password" });
             //}
             var result = await signInManager.PasswordSignInAsync(signIn.Name, signIn.Password, false, false);
-            //userManager.CreateSecurityTokenAsync
-            //AuthOptions authOptions = new AuthOptions();
-
+           
             var user = repository.GetByName(signIn.Name);
 
             AuthOptions authOptions = new AuthOptions();
@@ -94,24 +64,7 @@ namespace Blog.Controllers.Api
                 access_token = token,
                 user_name = user.UserName
             });
-            //var token = authOptions.GenerateToken(user.Id);
-
-            //return Json(new
-            //{
-            //    access_token = token,
-            //    user_name = user.name
-            //});
-
-            //var user = repository.GetByEmail(user1.);
-            //if (user == null)
-            //{
-            //    return BadRequest(new { message = "Invalid email" });
-            //}
-            //if (!BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
-            //{
-            //    return BadRequest(new { message = "Invalid password" });
-            //}
-            //var jwt = authService.GenerateToken(user.Id);
+           
 
         }
 
@@ -146,7 +99,6 @@ namespace Blog.Controllers.Api
 
                 IdentityResult result = await userManager.CreateAsync(user, register.Password);
 
-                //string result = await CreateNewUserAsync(user);
 
                 if (result.Succeeded)
                 {
@@ -155,9 +107,19 @@ namespace Blog.Controllers.Api
                     {
                         return BadRequest(new { error = "Invalid login and/or password" });
                     }
-                    //string token = Token(identity);
                     AuthOptions authOptions = new AuthOptions();
                     var token = authOptions.GenerateToken(user.Id);
+                    try
+                    {
+                        string message = $"Сохраните данные для входа. \nlogin: { user.UserName}\nPassword: { register.Password}";
+                        EmailService emailService = new EmailService();
+                        await emailService.SendEmailAsync($"{user.Email}", "Спасибо за регистрацию", message);
+                    }
+                    catch(Exception ex)
+                    {
+                        int x = 0;
+                        int y = 0;
+                    }
 
                     return Json(new
                     {
@@ -167,68 +129,13 @@ namespace Blog.Controllers.Api
                 }
                 return BadRequest(new { error = "Something went wrong. Please try again later" });
             }
-            catch (Exception ex)
+            catch
             {
                 return BadRequest(new { error = "Something went wrong. Please try again later" });
             }
         }
 
-        //async Task<string> CreateNewUserAsync(User user)
-        //{
-        //    try
-        //    {
-        //        User newUser = new User
-        //        {
-        //            UserName = user.UserName,
-        //            PhoneNumber = user.PhoneNumber,
-        //            Email = user.Email
-        //        };
-
-        //        IdentityResult result = await userManager.CreateAsync(newUser, user.PasswordHash);
-
-        //        return "successfully";
-        //    }
-        //    catch
-        //    {
-        //        return "error";
-        //    }
-        //}
-
-        //string Token(Task<ClaimsIdentity> identity)
-        //{
-        //    try
-        //    {
-        //        AuthOptions authOptions = new AuthOptions();
-        //        //authOptions.GenerateToken(identity.id);
-
-
-        //        //string x = identity.Id.ToString();
-
-        //        var jwt = new JwtSecurityToken(
-        //        issuer: AuthOptions.ISSUER,
-        //        audience: AuthOptions.AUDIENCE,
-        //        /// может быть ошибка из за Result
-        //        claims: identity.Result.Claims,
-
-
-        //        ///
-        //        expires: DateTime.Now.AddMinutes(AuthOptions.LIFETIME),
-        //        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
-        //        ) ;
-
-        //        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-        //            return encodedJwt;
-        //    }
-        //    catch
-        //    {
-        //        return "error getting token jwt";
-        //    }
-        //}
-
-        //private void authOptionsGenerateToken()
-        //{
-        //    throw new NotImplementedException();
-        //}
+     
 
         async Task<ClaimsIdentity> GetIdentityAsync(string login, string password)
         {
