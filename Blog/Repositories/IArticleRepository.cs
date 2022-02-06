@@ -9,5 +9,6 @@ namespace Blog.Repositories
     public interface IArticleRepository
     {
         Article Create(Article article);
+        IEnumerable<Article> GetAll();
     }
 }

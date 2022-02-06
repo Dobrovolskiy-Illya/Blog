@@ -19,5 +19,10 @@ namespace Blog.Repositories
             context.SaveChanges();
             return article;
         }
+
+        public IEnumerable<Article> GetAll()
+        {
+            return context.Articles.ToList();
+        }
     }
 }

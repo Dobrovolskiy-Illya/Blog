@@ -69,9 +69,10 @@ class CreateArticle extends Component {
 
 
         let article = {
-            userName: this.props.userName,
+            JWT: sessionStorage.getItem("access_token"),
             title: this.state.title,
-            body: this.state.body,
+            someText: this.state.body,
+
 
         };
 

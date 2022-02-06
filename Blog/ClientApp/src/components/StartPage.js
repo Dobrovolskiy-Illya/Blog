@@ -1,21 +1,29 @@
 ﻿import React, { Component } from 'react';
+import { AllArticles } from './AllArticles';
 
 export class StartPage extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
 
         };
     }
 
 
-
+    
 
 
 
 
     render() {
+
+       
+
+
+
+
 
         return (
             <div>
@@ -49,9 +57,10 @@ export class StartPage extends Component {
 
                             </div>
                         </div>
-                        
                     </div>
-                   
+
+                    <AllArticles />
+
                 </div>
             </div>
         );

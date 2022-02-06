@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models.DTO
 {
-    public class CheckTokenModel: JWT
+    public class CheckTokenModel: Token
     {
     }
 }

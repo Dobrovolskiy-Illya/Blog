@@ -22,11 +22,8 @@ namespace Blog.Controllers.Api
     [Route("api/[controller]/[action]")]
     public class ArticleController : Controller
     {
-        //private readonly AuthService authService;
         private readonly IUserRepository userRepository;
         private readonly IArticleRepository articleRepository;
-        //UserContext context;
-
 
         public ArticleController(IUserRepository userRepository, IArticleRepository articleRepository)
         {
@@ -34,31 +31,6 @@ namespace Blog.Controllers.Api
             this.articleRepository = articleRepository;
 
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Create(CreateArticleModel article)
-        //{
-        //    string x = article.body;
-        //    string y = article.title;
-
-
-        //    context.Articles.Add(new Article
-        //    {
-
-        //    });
-
-
-        //    try
-        //    {
-               
-        //        return BadRequest(new { error = "Something went wrong. Please try again later" });
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest(new { error = "Something went wrong. Please try again later" });
-        //    }
-        //}
-
 
         [HttpPost]
         public IActionResult Create(CreateArticleModel createArticle)
@@ -76,7 +48,8 @@ namespace Blog.Controllers.Api
                     Body = createArticle.SomeText,
                     Date = DateTime.Now,
                     UserId = user.Id,
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    User = user
                 };
                 var info = articleRepository.Create(article);
 
@@ -92,6 +65,15 @@ namespace Blog.Controllers.Api
                 //});
             }
             return BadRequest(new { error = "The token isn't correct" });
+        }
+
+        [HttpGet]
+        public IActionResult GetArticles()
+        {
+            return Json(new
+            {
+                articles = articleRepository.GetAll()
+            });
         }
     }
 }

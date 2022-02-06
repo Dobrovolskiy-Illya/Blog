@@ -14,6 +14,6 @@ namespace Blog.Models
         public DateTime Date { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }
-        //public virtual User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

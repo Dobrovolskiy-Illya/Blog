@@ -42,6 +42,7 @@ namespace Blog
                 .AddEntityFrameworkStores<UserContext>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddControllersWithViews();
             services.AddSession();
         }

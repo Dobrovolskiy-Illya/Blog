@@ -13,6 +13,8 @@ export class Article extends Component {
 
     render() {
 
+        console.log(this.props.info)
+
         return (
             <div className="d-flex justify-content-between">
                 <div>

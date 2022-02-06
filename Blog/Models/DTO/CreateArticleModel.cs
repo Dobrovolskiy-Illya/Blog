@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models.DTO
 {
-    public class CreateArticleModel: JWT
+    public class CreateArticleModel: Token
     {
         public string Title { get; set; }
         public string SomeText { get; set; }

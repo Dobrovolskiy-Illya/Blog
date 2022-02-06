@@ -15,7 +15,7 @@ export class ArticleTags extends Component {
 
         return (
             <div>
-                {/*{todosData.map(x => <Article key={x.id} info={x} state={onClick} />)}*/}
+               {/* {todosData.map(x => <Article key={x.id} info={x} state={onClick} />)}*/}
             </div>
         );
     }

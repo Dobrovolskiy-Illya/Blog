@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models
 {
-    public class JWT
+    public class Token
     {
         public string JWT { get; set; }
     }
